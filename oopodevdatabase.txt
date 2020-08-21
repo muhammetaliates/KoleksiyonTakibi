@@ -1,0 +1,137 @@
+USE [master]
+GO
+/****** Object:  Database [collectiondb]    Script Date: 20.08.2020 04:16:10 ******/
+CREATE DATABASE [collectiondb]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'collectiondb', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\collectiondb.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'collectiondb_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\collectiondb_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [collectiondb] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [collectiondb].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [collectiondb] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [collectiondb] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [collectiondb] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [collectiondb] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [collectiondb] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [collectiondb] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [collectiondb] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [collectiondb] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [collectiondb] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [collectiondb] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [collectiondb] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [collectiondb] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [collectiondb] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [collectiondb] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [collectiondb] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [collectiondb] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [collectiondb] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [collectiondb] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [collectiondb] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [collectiondb] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [collectiondb] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [collectiondb] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [collectiondb] SET RECOVERY FULL 
+GO
+ALTER DATABASE [collectiondb] SET  MULTI_USER 
+GO
+ALTER DATABASE [collectiondb] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [collectiondb] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [collectiondb] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [collectiondb] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [collectiondb] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'collectiondb', N'ON'
+GO
+ALTER DATABASE [collectiondb] SET QUERY_STORE = OFF
+GO
+USE [collectiondb]
+GO
+/****** Object:  User [kdr35]    Script Date: 20.08.2020 04:16:10 ******/
+CREATE USER [kdr35] FOR LOGIN [kdr35] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  Table [dbo].[collection]    Script Date: 20.08.2020 04:16:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[collection](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ad] [nvarchar](50) NOT NULL,
+	[tur] [int] NOT NULL,
+	[tur2] [int] NULL,
+	[yil] [int] NOT NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dvdTable]    Script Date: 20.08.2020 04:16:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dvdTable](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[kacCD] [int] NULL,
+	[boyut] [float] NULL,
+	[dvdID] [int] NOT NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tur]    Script Date: 20.08.2020 04:16:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tur](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ad] [nchar](10) NULL,
+	[blok] [int] NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tur2]    Script Date: 20.08.2020 04:16:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tur2](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ad] [nvarchar](50) NOT NULL,
+	[tur] [int] NOT NULL,
+	[blok] [int] NULL
+) ON [PRIMARY]
+GO
+USE [master]
+GO
+ALTER DATABASE [collectiondb] SET  READ_WRITE 
+GO
