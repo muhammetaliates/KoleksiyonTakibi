@@ -50,20 +50,20 @@ namespace KoleksiyonTakibi
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            catList = new List<ComboBoxItem>();
+            catList = new List<ComboBoxItem>();//kategori listesini oluştur
 
-            comboBox1.Items.Clear();
+            comboBox1.Items.Clear(); // combobox temizle
 
-            DataTable dt = dbClass.select("select * from tur order by id desc");
-            foreach (DataRow satir in dt.Rows)
+            DataTable dt = dbClass.Select("select * from tur order by id desc");// sorguyu tabloya aktar
+            foreach (DataRow satir in dt.Rows)// datatable ı datarow olarak oku
             {
-                catList.Add(new ComboBoxItem(satir[1].ToString(), satir[0].ToString()));
+                catList.Add(new ComboBoxItem(satir[1].ToString(), satir[0].ToString()));// kategorilistesine comboboxitem ekle
                
             }
-            comboBox1.DisplayMember = "getValue";
-            comboBox1.ValueMember = "getData";
-            comboBox1.DataSource = catList;
-            comboBox1.SelectedIndex = 0;
+            comboBox1.DisplayMember = "getValue";//görünen değeri gösterecek olan method ismi
+            comboBox1.ValueMember = "getData";//arkaplan değerini gösterecek olan methos ismi
+            comboBox1.DataSource = catList;//combobox1 veri kaynağını kategorilistesinden al
+            comboBox1.SelectedIndex = 0;//0.indexi seç
            
         }
 
@@ -72,50 +72,50 @@ namespace KoleksiyonTakibi
 
             addEdit newForm = new addEdit();
             Globals.add = true;
-            newForm.Show();
+            newForm.Show();//ekleme formunu göster
         }
 
         private void cikis_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Application.Exit();//çıkış butonu
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (Globals.ID != -1)
+            if (Globals.ID != -1)//eğer bir satır seçiliyse
             {
                 addEdit newForm = new addEdit();
                 Globals.add = false;
-                newForm.Show();
+                newForm.Show();//düzenleme formunu aç
             }
         }
 
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString() != "")
+            if (dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString() != "")// boş bir yere tıklanmadıysa
             {
-                Globals.ID = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());
+                Globals.ID = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString());//static ve global id değişkenine id tanımla
             }
             else
             {
-                Globals.ID = -1;
+                Globals.ID = -1;//boş bir yere tıklanınca -1 e eşitle
             }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataTable dt = null;
+            DataTable dt = null;//null datatable oluştur
 
             int index = Convert.ToInt32(((ComboBoxItem)comboBox1.SelectedItem).getData);
-           switch (index)
+           switch (index)//combobox verisini seç
             {
-                case 1002:
-                    dt = dbClass.select("select c.id, c.ad,t.ad,t2.ad,c.yil from collection c inner join tur t on c.tur = t.id inner join tur2 t2 on c.tur2 = t2.id where t.blok = 0 and t2.blok = 0");
+                case 1002://eğer 1002 id li seçildi ise
+                    dt = dbClass.Select("select c.id, c.ad,t.ad,t2.ad,c.yil from collection c inner join tur t on c.tur = t.id inner join tur2 t2 on c.tur2 = t2.id where t.blok = 0 and t2.blok = 0");
                   
                 break;
-                default:
-                    dt = dbClass.select("select c.id, c.ad,t.ad,t2.ad,c.yil from collection c inner join tur t on c.tur = t.id inner join tur2 t2 on c.tur2 = t2.id where t.blok = 0 and t2.blok = 0 and c.tur = " + index.ToString());
+                default://diğerleri seçildi ise
+                    dt = dbClass.Select("select c.id, c.ad,t.ad,t2.ad,c.yil from collection c inner join tur t on c.tur = t.id inner join tur2 t2 on c.tur2 = t2.id where t.blok = 0 and t2.blok = 0 and c.tur = " + index.ToString());
                 break;
             }
             dataGridView1.DataSource = dt;
@@ -124,19 +124,21 @@ namespace KoleksiyonTakibi
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(Globals.ID != -1 )
+            if(Globals.ID != -1 )//eğer boş bir yer seçilmedi ise
             {
                 if(MessageBox.Show("İşlemi gerçekleştirmek isteidiğinize emin misiniz?","Silme İşlemi",MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    dbClass.Execute("delete from collection where id= " + Globals.ID);
-                    Globals.productList.Remove(Globals.ID);
+                    dbClass.Execute("delete from collection where id= " + Globals.ID);//sorguyu çalıştır
+                    Globals.productList.Remove(Globals.ID);//product listten sil
                 }
             }
         }
 
         private void refreshTable()
         {
-            DataTable dt = dbClass.select("select c.id as id, c.ad as ad,t.ad as turisim,t2.ad as tur2isim,c.yil as yil,c.tur as tur,c.tur2 as tur2 from collection c inner join tur t on c.tur = t.id inner join tur2 t2 on c.tur2 = t2.id where t.blok = 0 and t2.blok = 0");
+
+            //tüm ürünleri listeleyen veya yenileyen fonksiyon
+            DataTable dt = dbClass.Select("select c.id as id, c.ad as ad,t.ad as turisim,t2.ad as tur2isim,c.yil as yil,c.tur as tur,c.tur2 as tur2 from collection c inner join tur t on c.tur = t.id inner join tur2 t2 on c.tur2 = t2.id where t.blok = 0 and t2.blok = 0");
             foreach (DataRow satir in dt.Rows)
             {
                 Product p = null;

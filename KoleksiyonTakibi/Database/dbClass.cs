@@ -12,14 +12,15 @@ namespace KoleksiyonTakibi
 
         SqlConnection sqlConn = new SqlConnection(Globals.connStr);
         DataTable tempTable;
-        public DataTable select(string queryString)
+        public DataTable Select(string queryString)//bu komut ile çalıştırılan komutu datatable olarak döndürüyoruz
         {
             tempTable = new DataTable();
-            try
+            //yeni bir datatable oluşturarak veritabanından gelen verileri burada saklıyoruz.
+            try // try catch yapısı ile hata kontrolü yapıyoruz
             {
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(queryString,sqlConn);
-                dataAdapter.Fill(tempTable);
-                return tempTable;
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(queryString,sqlConn); //sqldataadapter kullanarak querystringi tablo yapısına dönüştürürken kolaylık sağlıyoruz
+                dataAdapter.Fill(tempTable); //boş tabloyu gelen veriler ile dolduruyoruz
+                return tempTable; // tabloyu döndürüyoruz
             }
             catch(Exception e)
             {
@@ -27,7 +28,7 @@ namespace KoleksiyonTakibi
             }
         }
 
-        public void Execute(string query)
+        public void Execute(string query) //tablo yapısına ihtiyaç duymadan sadece komut çalıştırmak istediğimiz zaman bu komutu kullanıyoruz.
         {
             try
             {
@@ -42,7 +43,7 @@ namespace KoleksiyonTakibi
             }
         }
 
-        public DataTable Error(string errorMessage)
+        public DataTable Error(string errorMessage)// Hata olması durumunda programın hata vermesini engellemek ve hata analizi yapmak için gelen hatayı tabloya dolduruyoruz.
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("Hata");
