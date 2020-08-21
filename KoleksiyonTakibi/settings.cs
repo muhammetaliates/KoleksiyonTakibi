@@ -9,6 +9,15 @@ using System.Windows.Forms;
 
 namespace KoleksiyonTakibi
 {
+
+    /*
+     * 
+     * KISITLAMA KONTROL FORMU 
+     * KATEGORİ
+     * TÜR
+     * KISITLAMA KONTROLLERİ BURADA YAPILIR
+     * 
+     */
     public partial class settings : Form
     {
         public settings()
@@ -19,9 +28,9 @@ namespace KoleksiyonTakibi
         bool catKont = false, turKont = false;
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBox1.Checked == true)
+            if(checkBox1.Checked == true)//kategori checkbox seçildi ise
             {
-                comboBox1.Enabled = true;
+                comboBox1.Enabled = true;//combobox aktif et
                 catKont = true;
             }
             else
@@ -33,7 +42,7 @@ namespace KoleksiyonTakibi
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBox2.Checked == true)
+            if(checkBox2.Checked == true)//tür seçili ise
             {
                 turKont = true;
                 checkBox1.Checked = false;
@@ -56,16 +65,16 @@ namespace KoleksiyonTakibi
         {
             DataTable dt = null;
             listBox1.Items.Clear();
-            dt = dbClass.select("select * from tur where blok = 1");
-            foreach (DataRow row1 in dt.Rows)
+            dt = dbClass.Select("select * from tur where blok = 1"); // select sorgusundan gelen verileri tabloya aktar
+            foreach (DataRow row1 in dt.Rows)//datarow olarak oku
             {
-                listBox1.Items.Add(new ListBoxItem(row1[1].ToString(), row1[0].ToString()));
+                listBox1.Items.Add(new ListBoxItem(row1[1].ToString(), row1[0].ToString())); //listbox a aktar
             }
             listBox1.DisplayMember = "getValue";
             listBox1.ValueMember = "getData";
 
             listBox2.Items.Clear();
-            dt = dbClass.select("select * from tur2 where blok = 1");
+            dt = dbClass.Select("select * from tur2 where blok = 1"); // select sorgusundan gelen verileri tabloya aktar
             foreach (DataRow row1 in dt.Rows)
             {
                 listBox2.Items.Add(new ListBoxItem(row1[1].ToString(), row1[0].ToString()));
@@ -78,10 +87,10 @@ namespace KoleksiyonTakibi
         {
             comboBox1Data = new List<ComboBoxItem>();
             comboBox1.Items.Clear();
-            DataTable dt = dbClass.select("select * from tur");
-            foreach (DataRow row in dt.Rows)
+            DataTable dt = dbClass.Select("select * from tur"); // select sorgusundan gelen verileri tabloya aktar
+            foreach (DataRow row in dt.Rows)//datarow olarak oku
             {
-                comboBox1Data.Add(new ComboBoxItem(row[1].ToString(), row[0].ToString()));
+                comboBox1Data.Add(new ComboBoxItem(row[1].ToString(), row[0].ToString()));//combobox verilerini ekle
             }
 
             comboBox1.DisplayMember = "getValue";
@@ -99,10 +108,10 @@ namespace KoleksiyonTakibi
             comboBox2Data.Clear();
             string id = ((ComboBoxItem)comboBox1.SelectedItem).getData;
             string query = "select * from tur2 where tur = " + id;
-            DataTable dt = dbClass.select(query);
-            foreach (DataRow row in dt.Rows)
+            DataTable dt = dbClass.Select(query); // select sorgusundan gelen verileri tabloya aktar
+            foreach (DataRow row in dt.Rows)//datarow olarak oku
             {
-                comboBox2Data.Add(new ComboBoxItem(row[1].ToString(), row[0].ToString()));
+                comboBox2Data.Add(new ComboBoxItem(row[1].ToString(), row[0].ToString()));//combobox verilerini ekle
             }
             comboBox2.DisplayMember = "getValue";
             comboBox2.ValueMember = "getData";
@@ -112,7 +121,7 @@ namespace KoleksiyonTakibi
         private void button3_Click(object sender, EventArgs e)
         {
             int getID = Convert.ToInt32(((ListBoxItem)listBox1.SelectedItem).getData);
-            dbClass.Execute("update tur set blok = '0' where id=" + getID.ToString());
+            dbClass.Execute("update tur set blok = '0' where id=" + getID.ToString());//sorgu çalıştır
 
             listBoxYenile();
         }
@@ -120,7 +129,7 @@ namespace KoleksiyonTakibi
         private void button4_Click(object sender, EventArgs e)
         {
             int getID = Convert.ToInt32(((ListBoxItem)listBox2.SelectedItem).getData);
-            dbClass.Execute("update tur2 set blok = '0' where id=" + getID.ToString());
+            dbClass.Execute("update tur2 set blok = '0' where id=" + getID.ToString());//sorgu çalıştır
 
             listBoxYenile();
         }
@@ -129,11 +138,11 @@ namespace KoleksiyonTakibi
         {
             if(catKont == true)
             {
-                dbClass.Execute("update tur set blok = '1' where id=" + ((ComboBoxItem)comboBox1.SelectedItem).getData);
+                dbClass.Execute("update tur set blok = '1' where id=" + ((ComboBoxItem)comboBox1.SelectedItem).getData);//sorgu çalıştır
             }
             else if(turKont == true)
             {
-                dbClass.Execute("update tur2 set blok = '1' where id=" + ((ComboBoxItem)comboBox2.SelectedItem).getData);
+                dbClass.Execute("update tur2 set blok = '1' where id=" + ((ComboBoxItem)comboBox2.SelectedItem).getData);//sorgu çalıştır
             }
 
             listBoxYenile();
